@@ -5,11 +5,44 @@ import User from "../models/User.js";
   GET ALL DOCTORS
   GET /api/doctors
 */
+// import { configureStore } from "@reduxjs/toolkit";
+
+// import authReducer from "./slices/authSlice";
+
+// import appointmentReducer from "./slices/appointmentSlice";
+
+// import bookingReducer from "./slices/bookingSlice";
+
+
+// export const store = configureStore({
+
+//   reducer: {
+
+//     auth: authReducer,
+
+//     appointment: appointmentReducer,
+
+//     booking: bookingReducer
+
+//   }
+
+// });
+
 export const getAllDoctors = async (req, res) => {
   try {
-    const doctors = await Doctor.find()
-      .populate("userId", "username email role")
-      .sort({ createdAt: -1 });
+
+    const doctors = await Doctor.find({
+      // If you only want active doctors:
+      // isActive: true
+    })
+      .populate(
+        "userId",
+        "username email mobileNumber"
+      )
+      .sort({
+        doctorName: 1
+      });
+
 
     return res.status(200).json({
       success: true,
@@ -18,13 +51,18 @@ export const getAllDoctors = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("GET ALL DOCTORS ERROR:", error);
+
+    console.error(
+      "GET ALL DOCTORS ERROR:",
+      error
+    );
 
     return res.status(500).json({
       success: false,
       message: "Failed to fetch doctors",
       error: error.message
     });
+
   }
 };
 

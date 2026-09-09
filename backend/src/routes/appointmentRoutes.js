@@ -21,7 +21,7 @@ const router = express.Router();
 // Create schedule
 // POST /api/appointments/schedule
 router.post(
-  "/schedule",
+  "/create-schedule",
   protect,
   authorize("doctor"),
   createAppointmentSchedule
@@ -44,7 +44,7 @@ router.get(
 
 // Get available slots
 // GET /api/appointments/available-slots
-router.get(
+router.post(
   "/availableslots",
   protect,
   authorize("patient"),

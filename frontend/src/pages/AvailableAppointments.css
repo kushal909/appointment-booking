@@ -1,0 +1,289 @@
+.available-container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 40px auto;
+}
+
+.available-header {
+  margin-bottom: 30px;
+}
+
+.available-header h1 {
+  margin: 0 0 8px;
+  color: #1e293b;
+}
+
+.available-header p {
+  margin: 0;
+  color: #64748b;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.appointment-form {
+  padding: 25px;
+
+  background: white;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 12px;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  font-weight: 600;
+
+  color: #334155;
+}
+
+.form-group select,
+.form-group input {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 12px;
+
+  border: 1px solid #cbd5e1;
+
+  border-radius: 8px;
+
+  background: white;
+
+  font-size: 15px;
+}
+
+
+/* =========================
+   GET SLOTS BUTTON
+========================= */
+
+.get-slots-button {
+  width: 100%;
+
+  padding: 13px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #2563eb;
+
+  color: white;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.get-slots-button:hover {
+  background: #1d4ed8;
+}
+
+.get-slots-button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================
+   SLOTS
+========================= */
+
+.slots-container {
+  margin-top: 35px;
+}
+
+.slots-container h2 {
+  margin-bottom: 20px;
+
+  color: #1e293b;
+}
+
+.slots-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 15px;
+}
+
+.slot-button {
+  padding: 15px;
+
+  border: 1px solid #2563eb;
+
+  border-radius: 8px;
+
+  background: white;
+
+  color: #2563eb;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.slot-button:hover {
+  background: #2563eb;
+
+  color: white;
+}
+
+.slot-button.selected {
+  background: #2563eb;
+
+  color: white;
+}
+
+
+/* =========================
+   SELECTED APPOINTMENT
+========================= */
+
+.selected-appointment {
+  margin-top: 35px;
+
+  padding: 25px;
+
+  border: 1px solid #cbd5e1;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
+}
+
+.selected-appointment h2 {
+  margin-top: 0;
+
+  color: #1e293b;
+}
+
+.selected-details p {
+  margin: 10px 0;
+
+  color: #475569;
+}
+
+.confirm-booking-button {
+  margin-top: 15px;
+
+  padding: 12px 22px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #16a34a;
+
+  color: white;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.confirm-booking-button:hover {
+  background: #15803d;
+}
+
+
+/* =========================
+   ERROR
+========================= */
+
+.error-message {
+  margin-top: 20px;
+
+  padding: 12px 15px;
+
+  border-radius: 8px;
+
+  background: #fee2e2;
+
+  color: #b91c1c;
+}
+
+
+/* =========================
+   NO SLOTS
+========================= */
+
+.no-slots {
+  margin-top: 35px;
+
+  padding: 40px;
+
+  text-align: center;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 12px;
+
+  background: #f8fafc;
+}
+
+.no-slots h3 {
+  color: #334155;
+}
+
+.no-slots p {
+  color: #64748b;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+  .slots-grid {
+    grid-template-columns:
+      repeat(3, 1fr);
+  }
+
+}
+
+@media (max-width: 650px) {
+
+  .available-container {
+    width: 94%;
+
+    margin: 25px auto;
+  }
+
+  .slots-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 450px) {
+
+  .slots-grid {
+    grid-template-columns: 1fr;
+  }
+
+}

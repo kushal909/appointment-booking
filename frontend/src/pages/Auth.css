@@ -1,0 +1,72 @@
+/* ==========================================
+   ROLE SECTION
+========================================== */
+
+.role-section {
+
+  margin-top: 5px;
+
+  padding: 20px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 14px;
+
+}
+
+
+.role-section h3 {
+
+  margin: 0 0 20px;
+
+  font-size: 16px;
+
+  color: #1e293b;
+
+}
+
+
+/* ==========================================
+   TEXTAREA
+========================================== */
+
+.form-group textarea {
+
+  width: 100%;
+
+  min-height: 90px;
+
+  box-sizing: border-box;
+
+  padding: 13px 14px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 10px;
+
+  outline: none;
+
+  font-size: 14px;
+
+  font-family: inherit;
+
+  resize: vertical;
+
+}
+
+
+.form-group textarea:focus {
+
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(
+      37,
+      99,
+      235,
+      0.1
+    );
+
+}

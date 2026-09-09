@@ -13,7 +13,7 @@ import generateToken from "../utils/generateToken.js";
 // =====================================================
 
 export const register = async (req, res) => {
-
+  console.log("req.body",req.body)
   const session = await User.startSession();
 
   try {
@@ -27,6 +27,9 @@ export const register = async (req, res) => {
       patientDetails
     } = req.body;
 
+
+
+    console.log("req.body",req.body)
 
     // =================================================
     // VALIDATION

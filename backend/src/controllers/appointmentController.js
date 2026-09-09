@@ -41,12 +41,12 @@ export const createAppointmentSchedule = async (
   res
 ) => {
   try {
-    console.log("req.body",req.body)
+    // console.log("req.body",req.body)
     const {
       date,
       fromTime,
       endTime,
-      slotDuration,
+
     } = req.body;
 
 
@@ -60,15 +60,6 @@ export const createAppointmentSchedule = async (
     }
 
 
-    const duration = Number(slotDuration);
-
-    if (!Number.isInteger(duration) || duration <= 0) {
-      return res.status(400).json({
-        success: false,
-        message:
-          "slotDuration must be a positive number"
-      });
-    }
 
 
     // Find doctor using logged-in user
@@ -132,25 +123,25 @@ export const createAppointmentSchedule = async (
     // Generate slots
     const slots = [];
 
-    for (
-      let current = start;
-      current < end;
-      current += duration
-    ) {
+    // for (
+    //   let current = start;
+    //   current < end;
+    //   current += duration
+    // ) {
 
-      const slotEnd =
-        current + duration;
+    //   const slotEnd =
+    //     current + duration;
 
-      if (slotEnd > end) {
-        break;
-      }
+    //   if (slotEnd > end) {
+    //     break;
+    //   }
 
-      slots.push({
-        startTime: convertToTime(current),
-        endTime: convertToTime(slotEnd),
-        status: "available"
-      });
-    }
+    //   slots.push({
+    //     startTime: convertToTime(current),
+    //     endTime: convertToTime(slotEnd),
+    //     status: "available"
+    //   });
+    // }
 
 
     // Create schedule
@@ -167,7 +158,7 @@ export const createAppointmentSchedule = async (
 
         endTime,
 
-       // slots
+       // slotss
       });
 
 
@@ -286,27 +277,28 @@ export const availableAppointmentLists =async (req,res) =>{
   try {
 
     const {doctorId,slotInMinutes,date}=req.body
-
-
+    console.log("req.body",req.body)
     let totalTime = await Appointment.find()
   
 
-
+let _id =doctorId
    
     //let availableTime  = await Appointment.findOne({doctorId,date: new Date(date)})
 
     const startOfDay = new Date(`${date}T00:00:00.000Z`);
 
 const endOfDay = new Date(`${date}T23:59:59.999Z`);
-
+console.log("doctorId",doctorId)
 const availableTime = await Appointment.findOne({
-    doctorId,
+doctorId,
     date: {
         $gte: startOfDay,
         $lte: endOfDay
     }
-});
+}
 
+);
+      console.log("availableTime",availableTime)
 
     if(availableTime == null){
       return res.status(400).json({message:"availbaleTime is not available "})
@@ -478,7 +470,7 @@ if(result>0){
 
 
 }
-
+console.log("bookable-slots",bookableSlots)
 res.json({message:"successfully giving available slots",bookableSlots:bookableSlots,bookedSlots:bookedSlots})
     }
 
