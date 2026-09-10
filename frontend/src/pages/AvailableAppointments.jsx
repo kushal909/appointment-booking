@@ -1,5 +1,5 @@
 import {
-  useState
+  useState,useEffect
 } from "react";
 
 
@@ -8,19 +8,23 @@ import {
   useSelector
 } from "react-redux";
 
-
+import { getUser } from "../utils/authStorage";
 import {
   useParams
 } from "react-router-dom";
 
 
+// import {
+//   getAvailableAppointmentSlots,
+
+//   clearAvailableSlots
+
+// } from "../redux/slices/appointmentSlice";
 import {
   getAvailableAppointmentSlots,
-
-  clearAvailableSlots
-
+  clearAvailableSlots,
+  confirmBooking
 } from "../redux/slices/appointmentSlice";
-
 
 import "./AvailableAppointments.css";
 
@@ -31,7 +35,17 @@ function AvailableAppointments() {
   const dispatch =
     useDispatch();
 
-
+const {
+  bookableSlots,
+  bookedSlots,
+  slotsLoading,
+  loading,
+  success,
+  error
+} = useSelector(
+  (state) => state.appointment
+);
+console.log("bookableSlots",bookableSlots)
   // =========================
   // GET DOCTOR ID FROM URL
   // =========================
@@ -65,22 +79,22 @@ function AvailableAppointments() {
   // APPOINTMENT
   // =========================
 
-  const {
+  // const {
 
-    bookableSlots,
+  //   bookableSlots,
 
-    bookedSlots,
+  //   bookedSlots,
 
-    slotsLoading,
+  //   slotsLoading,
 
-    error
+  //   error
 
-  } = useSelector(
+  // } = useSelector(
 
-    (state) =>
-      state.appointment
+  //   (state) =>
+  //     state.appointment
 
-  );
+  // );
 
 
   // =========================
@@ -108,7 +122,15 @@ function AvailableAppointments() {
   // =========================
   // FIND DOCTOR
   // =========================
+useEffect(() => {
 
+  if (success) {
+
+    alert("Appointment booked successfully!");
+
+  }
+
+}, [success]);
   const selectedDoctor =
     doctors.find(
 
@@ -131,20 +153,31 @@ function AvailableAppointments() {
   const handleDateChange =
     (e) => {
 
-      setDate(
-        e.target.value
-      );
+      // setDate(
+      //   e.target.value
+      // );
 
 
-      setSelectedSlot(
-        null
-      );
+      // setSelectedSlot(
+      //   null
+      // );
 
 
-      dispatch(
-        clearAvailableSlots()
-      );
+      // dispatch(
+      //   clearAvailableSlots()
+      // );
+ const selectedDate = e.target.value;
+  const today = new Date().toISOString().split("T")[0];
+  if (selectedDate < today) {
+    alert("You cannot select a previous date");
+    return;
+  }
 
+  setDate(selectedDate);
+
+  setSelectedSlot(null);
+
+  dispatch(clearAvailableSlots());
     };
 
 
@@ -279,7 +312,75 @@ function AvailableAppointments() {
 
     };
 
+// const handleConfirmBooking = () => {
 
+//   if (!selectedSlot) {
+//     alert("Please select a slot");
+//     return;
+//   }
+
+
+
+//   const bookingData = {
+
+//     doctorId: doctorId,
+
+//     date: date,
+
+//     startTime: selectedSlot.startTime,
+
+//     endTime: selectedSlot.endTime,
+
+//     patientId: patientId.id
+
+//   };
+
+//   console.log(
+//     "Confirm booking data:",
+//     bookingData
+//   );
+
+//   dispatch(
+//     confirmBooking(bookingData)
+//   );
+// };
+const handleConfirmBooking = () => {
+
+  if (!selectedSlot) {
+
+    alert("Please select a slot");
+
+    return;
+
+  }
+  let patientId = getUser()
+  console.log("patientId",patientId)
+  const bookingData = {
+
+    doctorId,
+
+    date,
+
+    startTime:
+      selectedSlot.startTime,
+
+    endTime:
+      selectedSlot.endTime,
+
+    patientId:patientId.id
+
+  };
+
+  console.log(
+    "Booking data:",
+    bookingData
+  );
+
+  dispatch(
+    confirmBooking(bookingData)
+  );
+
+};
   return (
 
     <div className="available-container">
@@ -493,7 +594,16 @@ function AvailableAppointments() {
 
         </button>
 
-
+{/* <button
+  className="confirm-booking-button"
+  onClick={handleConfirmBooking}
+  disabled={loading}
+>
+  {loading
+    ? "Booking..."
+    : "Confirm Booking"
+  }
+</button> */}
       </div>
 
 
@@ -779,7 +889,7 @@ function AvailableAppointments() {
           {/* CONFIRM BOOKING */}
           {/* ========================= */}
 
-          <button
+          {/* <button
 
             className="confirm-booking-button"
 
@@ -787,9 +897,25 @@ function AvailableAppointments() {
 
             Confirm Booking
 
-          </button>
+          </button> */}
+{/* 
+<button
+  className="confirm-booking-button"
+  onClick={handleConfirmBooking}
+>
+  Confirm Booking
+</button> */}
 
-
+<button
+  className="confirm-booking-button"
+  onClick={handleConfirmBooking}
+  disabled={loading}
+>
+  {loading
+    ? "Booking..."
+    : "Confirm Booking"
+  }
+</button>
         </div>
 
       )}

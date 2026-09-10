@@ -278,8 +278,8 @@ export const availableAppointmentLists =async (req,res) =>{
 
     const {doctorId,slotInMinutes,date}=req.body
     console.log("req.body",req.body)
-    let totalTime = await Appointment.find()
-  
+    let doctorInfo = await Doctor.findById({_id:doctorId})
+    console.log("doctorInfo",doctorInfo)
 
 let _id =doctorId
    
@@ -301,7 +301,7 @@ doctorId,
       console.log("availableTime",availableTime)
 
     if(availableTime == null){
-      return res.status(400).json({message:"availbaleTime is not available "})
+      return res.status(400).json({message:"adoctor has not arranged slot yet !"})
     }
 
 
@@ -358,7 +358,8 @@ let endMinutes = hourse * 60 + minutese;
 }
     if(availableTime.slots.length == 0) {
    
-     return res.json(arr)
+    // return res.json(arr)
+   return   res.json({message:"successfully giving available slots",bookableSlots:arr,bookedSlots:[]})
     }
 
     else  {

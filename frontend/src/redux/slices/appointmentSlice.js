@@ -1,3 +1,5 @@
+
+
 import {
   createSlice,
   createAsyncThunk
@@ -33,9 +35,9 @@ const initialState = {
 };
 
 
-// =========================
-// CREATE APPOINTMENT
-// =========================
+// =====================================================
+// CREATE APPOINTMENT SCHEDULE
+// =====================================================
 
 export const createAppointmentSchedule =
   createAsyncThunk(
@@ -114,9 +116,9 @@ export const createAppointmentSchedule =
   );
 
 
-// =========================
-// GET AVAILABLE SLOTS
-// =========================
+// =====================================================
+// GET AVAILABLE APPOINTMENT SLOTS
+// =====================================================
 
 export const getAvailableAppointmentSlots =
   createAsyncThunk(
@@ -195,9 +197,90 @@ export const getAvailableAppointmentSlots =
   );
 
 
-// =========================
+// =====================================================
+// CONFIRM / BOOK APPOINTMENT
+// =====================================================
+
+export const confirmBooking =
+  createAsyncThunk(
+
+    "appointment/confirmBooking",
+
+    async (bookingData, thunkAPI) => {
+
+      try {
+
+        console.log(
+          "Confirm booking data:",
+          bookingData
+        );
+
+
+        const token =
+          getToken();
+
+
+        console.log(
+          "token:",
+          token
+        );
+
+
+        const response =
+          await api.post(
+
+            "/appointments/bookslot",
+
+            bookingData,
+
+            {
+              headers: {
+
+                Authorization:
+                  `Bearer ${token}`
+
+              }
+
+            }
+
+          );
+
+
+        console.log(
+          "Booking response:",
+          response.data
+        );
+
+
+        return response.data;
+
+
+      } catch (error) {
+
+        console.log(
+          "Booking error:",
+          error.response?.data
+        );
+
+
+        return thunkAPI.rejectWithValue(
+
+          error.response?.data?.message ||
+
+          "Failed to book appointment"
+
+        );
+
+      }
+
+    }
+
+  );
+
+
+// =====================================================
 // SLICE
-// =========================
+// =====================================================
 
 const appointmentSlice =
   createSlice({
@@ -209,10 +292,9 @@ const appointmentSlice =
 
     reducers: {
 
-
-      // =========================
+      // =================================================
       // CLEAR ERROR
-      // =========================
+      // =================================================
 
       clearAppointmentError:
         (state) => {
@@ -222,9 +304,9 @@ const appointmentSlice =
         },
 
 
-      // =========================
+      // =================================================
       // CLEAR SUCCESS
-      // =========================
+      // =================================================
 
       clearAppointmentSuccess:
         (state) => {
@@ -234,9 +316,9 @@ const appointmentSlice =
         },
 
 
-      // =========================
-      // CLEAR SLOTS
-      // =========================
+      // =================================================
+      // CLEAR AVAILABLE SLOTS
+      // =================================================
 
       clearAvailableSlots:
         (state) => {
@@ -245,14 +327,30 @@ const appointmentSlice =
 
           state.bookedSlots = [];
 
+        },
+
+
+      // =================================================
+      // CLEAR APPOINTMENT
+      // =================================================
+
+      clearAppointment:
+        (state) => {
+
+          state.appointment = null;
+
+          state.success = false;
+
+          state.error = null;
+
         }
 
     },
 
 
-    // =========================
+    // =================================================
     // EXTRA REDUCERS
-    // =========================
+    // =================================================
 
     extraReducers:
       (builder) => {
@@ -261,13 +359,10 @@ const appointmentSlice =
 
 
           // =================================================
-          // CREATE APPOINTMENT
+          // CREATE APPOINTMENT SCHEDULE
           // =================================================
 
-
-          // =========================
           // PENDING
-          // =========================
 
           .addCase(
 
@@ -286,9 +381,7 @@ const appointmentSlice =
           )
 
 
-          // =========================
           // SUCCESS
-          // =========================
 
           .addCase(
 
@@ -312,9 +405,7 @@ const appointmentSlice =
           )
 
 
-          // =========================
           // ERROR
-          // =========================
 
           .addCase(
 
@@ -335,13 +426,10 @@ const appointmentSlice =
 
 
           // =================================================
-          // GET AVAILABLE SLOTS
+          // GET AVAILABLE APPOINTMENT SLOTS
           // =================================================
 
-
-          // =========================
           // PENDING
-          // =========================
 
           .addCase(
 
@@ -362,9 +450,7 @@ const appointmentSlice =
           )
 
 
-          // =========================
           // SUCCESS
-          // =========================
 
           .addCase(
 
@@ -381,17 +467,13 @@ const appointmentSlice =
               );
 
 
-              // =========================
               // SAVE BOOKABLE SLOTS
-              // =========================
 
               state.bookableSlots =
                 action.payload.bookableSlots || [];
 
 
-              // =========================
               // SAVE BOOKED SLOTS
-              // =========================
 
               state.bookedSlots =
                 action.payload.bookedSlots || [];
@@ -404,9 +486,7 @@ const appointmentSlice =
           )
 
 
-          // =========================
           // ERROR
-          // =========================
 
           .addCase(
 
@@ -425,6 +505,80 @@ const appointmentSlice =
 
             }
 
+          )
+
+
+          // =================================================
+          // CONFIRM BOOKING
+          // =================================================
+
+          // PENDING
+
+          .addCase(
+
+            confirmBooking.pending,
+
+            (state) => {
+
+              state.loading = true;
+
+              state.error = null;
+
+              state.success = false;
+
+            }
+
+          )
+
+
+          // SUCCESS
+
+          .addCase(
+
+            confirmBooking.fulfilled,
+
+            (state, action) => {
+
+              state.loading = false;
+
+
+              console.log(
+                "Confirm booking success:",
+                action.payload
+              );
+
+
+              state.appointment =
+                action.payload.data ||
+                action.payload;
+
+
+              state.success = true;
+
+              state.error = null;
+
+            }
+
+          )
+
+
+          // ERROR
+
+          .addCase(
+
+            confirmBooking.rejected,
+
+            (state, action) => {
+
+              state.loading = false;
+
+              state.error =
+                action.payload;
+
+              state.success = false;
+
+            }
+
           );
 
       }
@@ -432,9 +586,9 @@ const appointmentSlice =
   });
 
 
-// =========================
+// =====================================================
 // EXPORT ACTIONS
-// =========================
+// =====================================================
 
 export const {
 
@@ -442,13 +596,15 @@ export const {
 
   clearAppointmentSuccess,
 
-  clearAvailableSlots
+  clearAvailableSlots,
+
+  clearAppointment
 
 } = appointmentSlice.actions;
 
 
-// =========================
+// =====================================================
 // EXPORT REDUCER
-// =========================
+// =====================================================
 
 export default appointmentSlice.reducer;

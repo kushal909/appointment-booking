@@ -19,7 +19,7 @@ import CreateAppointment from "./pages/CreateAppointment";
  import DoctorBookings from "./pages/DoctorBookings";
 
  import AvailableAppointments
-  from "./pages/AvailableAppointments";
+ from "./pages/AvailableAppointments";
 
 // // Patient
 // import Doctors from "./pages/Doctors";
